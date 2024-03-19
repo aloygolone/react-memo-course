@@ -1,16 +1,16 @@
-import styles from "./EndGameModal.module.css";
+import styles from "./EndGameModal.module.css"
 
-import { Button } from "../Button/Button";
+import { Button } from "../Button/Button"
 
-import deadImageUrl from "./images/dead.png";
-import celebrationImageUrl from "./images/celebration.png";
+import deadImageUrl from "./images/dead.png"
+import celebrationImageUrl from "./images/celebration.png"
 
 export function EndGameModal({ isWon, gameDurationSeconds, gameDurationMinutes, onClick }) {
-  const title = isWon ? "Вы победили!" : "Вы проиграли!";
+  const title = isWon ? "Вы победили!" : "Вы проиграли!"
 
-  const imgSrc = isWon ? celebrationImageUrl : deadImageUrl;
+  const imgSrc = isWon ? celebrationImageUrl : deadImageUrl
 
-  const imgAlt = isWon ? "celebration emodji" : "dead emodji";
+  const imgAlt = isWon ? "celebration emodji" : "dead emodji"
 
   return (
     <div className={styles.modal}>
@@ -23,5 +23,5 @@ export function EndGameModal({ isWon, gameDurationSeconds, gameDurationMinutes, 
 
       <Button onClick={onClick}>Начать сначала</Button>
     </div>
-  );
+  )
 }

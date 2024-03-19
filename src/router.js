@@ -1,6 +1,6 @@
-import { createBrowserRouter } from "react-router-dom";
-import { GamePage } from "./pages/GamePage/GamePage";
-import { SelectLevelPage } from "./pages/SelectLevelPage/SelectLevelPage";
+import { createBrowserRouter } from "react-router-dom"
+import { GamePage } from "./pages/GamePage/GamePage"
+import { SelectLevelPage } from "./pages/SelectLevelPage/SelectLevelPage"
 
 export const router = createBrowserRouter(
   [
@@ -18,4 +18,4 @@ export const router = createBrowserRouter(
    * он же указан в homepage package.json и в index.html
    */
   { basename: "/react-memo" },
-);
+)

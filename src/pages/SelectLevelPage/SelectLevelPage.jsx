@@ -1,5 +1,5 @@
-import { Link } from "react-router-dom";
-import styles from "./SelectLevelPage.module.css";
+import { Link } from "react-router-dom"
+import styles from "./SelectLevelPage.module.css"
 
 export function SelectLevelPage() {
   return (
@@ -25,5 +25,5 @@ export function SelectLevelPage() {
         </ul>
       </div>
     </div>
-  );
+  )
 }
