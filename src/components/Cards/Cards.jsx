@@ -1,39 +1,11 @@
 import { shuffle } from "lodash"
 import { useEffect, useState } from "react"
-import { generateDeck } from "../../utils/cards"
+import { generateDeck, getTimerValue } from "../../utils/cards"
 import styles from "./Cards.module.css"
 import { EndGameModal } from "../../components/EndGameModal/EndGameModal"
 import { Button } from "../../components/Button/Button"
 import { Card } from "../../components/Card/Card"
-
-// Игра закончилась
-const STATUS_LOST = "STATUS_LOST"
-const STATUS_WON = "STATUS_WON"
-// Идет игра: карты закрыты, игрок может их открыть
-const STATUS_IN_PROGRESS = "STATUS_IN_PROGRESS"
-// Начало игры: игрок видит все карты в течении нескольких секунд
-const STATUS_PREVIEW = "STATUS_PREVIEW"
-
-function getTimerValue(startDate, endDate) {
-  if (!startDate && !endDate) {
-    return {
-      minutes: 0,
-      seconds: 0,
-    }
-  }
-
-  if (endDate === null) {
-    endDate = new Date()
-  }
-
-  const diffInSecconds = Math.floor((endDate.getTime() - startDate.getTime()) / 1000)
-  const minutes = Math.floor(diffInSecconds / 60)
-  const seconds = diffInSecconds % 60
-  return {
-    minutes,
-    seconds,
-  }
-}
+import * as C from "../../const"
 
 /**
  * Основной компонент игры, внутри него находится вся игровая механика и логика.
@@ -44,7 +16,7 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
   // В cards лежит игровое поле - массив карт и их состояние открыта\закрыта
   const [cards, setCards] = useState([])
   // Текущий статус игры
-  const [status, setStatus] = useState(STATUS_PREVIEW)
+  const [status, setStatus] = useState(C.STATUS_PREVIEW)
 
   // Дата начала игры
   const [gameStartDate, setGameStartDate] = useState(null)
@@ -57,7 +29,7 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
     minutes: 0,
   })
 
-  function finishGame(status = STATUS_LOST) {
+  function finishGame(status = C.STATUS_LOST) {
     setGameEndDate(new Date())
     setStatus(status)
   }
@@ -66,13 +38,13 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
     setGameEndDate(null)
     setGameStartDate(startDate)
     setTimer(getTimerValue(startDate, null))
-    setStatus(STATUS_IN_PROGRESS)
+    setStatus(C.STATUS_IN_PROGRESS)
   }
   function resetGame() {
     setGameStartDate(null)
     setGameEndDate(null)
     setTimer(getTimerValue(null, null))
-    setStatus(STATUS_PREVIEW)
+    setStatus(C.STATUS_PREVIEW)
   }
 
   /**
@@ -105,7 +77,7 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
 
     // Победа - все карты на поле открыты
     if (isPlayerWon) {
-      finishGame(STATUS_WON)
+      finishGame(C.STATUS_WON)
       return
     }
 
@@ -127,19 +99,19 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
 
     // "Игрок проиграл", т.к на поле есть две открытые карты без пары
     if (playerLost) {
-      finishGame(STATUS_LOST)
+      finishGame(C.STATUS_LOST)
       return
     }
 
     // ... игра продолжается
   }
 
-  const isGameEnded = status === STATUS_LOST || status === STATUS_WON
+  const isGameEnded = status === C.STATUS_LOST || status === C.STATUS_WON
 
   // Игровой цикл
   useEffect(() => {
     // В статусах кроме превью доп логики не требуется
-    if (status !== STATUS_PREVIEW) {
+    if (status !== C.STATUS_PREVIEW) {
       return
     }
 
@@ -176,7 +148,7 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
     <div className={styles.container}>
       <div className={styles.header}>
         <div className={styles.timer}>
-          {status === STATUS_PREVIEW ? (
+          {status === C.STATUS_PREVIEW ? (
             <div>
               <p className={styles.previewText}>Запоминайте пары!</p>
               <p className={styles.previewDescription}>Игра начнется через {previewSeconds} секунд</p>
@@ -195,7 +167,7 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
             </>
           )}
         </div>
-        {status === STATUS_IN_PROGRESS ? <Button onClick={resetGame}>Начать заново</Button> : null}
+        {status === C.STATUS_IN_PROGRESS ? <Button onClick={resetGame}>Начать заново</Button> : null}
       </div>
 
       <div className={styles.cards}>
@@ -203,7 +175,7 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
           <Card
             key={card.id}
             onClick={() => openCard(card)}
-            open={status !== STATUS_IN_PROGRESS ? true : card.open}
+            open={status !== C.STATUS_IN_PROGRESS ? true : card.open}
             suit={card.suit}
             rank={card.rank}
           />
@@ -213,7 +185,7 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
       {isGameEnded ? (
         <div className={styles.modalContainer}>
           <EndGameModal
-            isWon={status === STATUS_WON}
+            isWon={status === C.STATUS_WON}
             gameDurationSeconds={timer.seconds}
             gameDurationMinutes={timer.minutes}
             onClick={resetGame}
