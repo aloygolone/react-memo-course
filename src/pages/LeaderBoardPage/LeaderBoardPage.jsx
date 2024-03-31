@@ -2,13 +2,14 @@ import { Link } from "react-router-dom"
 import styles from "./LeaderBoardPage.module.css"
 import cn from "classnames"
 import { Button } from "../../components/Button/Button"
+import { getLeaderList } from "../../api/api"
 
 export function LeaderBoardPage() {
-  const List = [
-    { id: 1, name: "Великий маг", time: 8 },
-    { id: 2, name: "Карточный мастер", time: 12 },
-    { id: 3, name: "Гениальный игрок", time: 31 },
-  ]
+  let List = []
+  getLeaderList().then(data => {
+    List = data.leaders
+  })
+  console.log(List)
 
   return (
     <>

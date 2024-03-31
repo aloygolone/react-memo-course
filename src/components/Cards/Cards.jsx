@@ -7,6 +7,7 @@ import { Button } from "../../components/Button/Button"
 import { Card } from "../../components/Card/Card"
 import * as C from "../../const"
 import { useGameMode } from "../../hooks/useGameMode"
+import { getLeaderList } from "../../api/api"
 
 /**
  * Основной компонент игры, внутри него находится вся игровая механика и логика.
@@ -83,7 +84,10 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
 
     // Победа - все карты на поле открыты
     if (isPlayerWon) {
-      finishGame(C.STATUS_WON)
+      getLeaderList().then(() => {
+        finishGame(C.STATUS_WON)
+      })
+
       return
     }
 

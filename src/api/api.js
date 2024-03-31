@@ -13,12 +13,12 @@ export async function getLeaderList() {
 }
 
 // Добавить лидера в список
-export async function postLeader() {
+export async function postLeader({ nameInputElement, time }) {
   const response = await fetch(host, {
     method: "POST",
     body: JSON.stringify({
-      name: "Пользователь",
-      time: 8,
+      name: nameInputElement.value,
+      time: time,
     }),
   })
 
