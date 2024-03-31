@@ -14,7 +14,7 @@ export function SelectLevelPage() {
     setDifficult({ ...difficult, [name]: value })
   }
 
-  let number
+  let number = 3
   if (difficult.mode === "easy") {
     number = 3
   }
