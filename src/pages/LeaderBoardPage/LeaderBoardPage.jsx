@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom"
 import styles from "./LeaderBoardPage.module.css"
 import cn from "classnames"
+import { Button } from "../../components/Button/Button"
 
 export function LeaderBoardPage() {
   const List = [
@@ -15,7 +16,7 @@ export function LeaderBoardPage() {
         <div className={styles.header}>
           <div className={styles.pagename}>Лидерборд</div>
           <Link to="/">
-            <button className={styles.startgame}>Начать игру</button>
+            <Button>Начать игру</Button>
           </Link>
         </div>
         <div className={styles.list}>

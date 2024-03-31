@@ -37,6 +37,10 @@
   font-variant-numeric: lining-nums proportional-nums;
 }
 
+.startgame:hover {
+  background: #7ac100cc;
+}
+
 .list {
   display: flex;
   flex-direction: column;
@@ -78,7 +82,7 @@
 }
 
 .playerText {
-  font-family: 'Poppins';
+  font-family: "Poppins";
   font-size: 24px;
   font-weight: 400;
   line-height: 32px;
