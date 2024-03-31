@@ -6,7 +6,7 @@ import { getLeaderList } from "../../api/api"
 let List = []
 
 await getLeaderList().then(data => {
-  List = data.leaders.slice(0, 10).sort((a, b) => (a.time > b.time ? 1 : -1))
+  List = data.leaders.sort((a, b) => (a.time > b.time ? 1 : -1)).slice(0, 10)
 })
 
 export function LeaderBoardPage() {

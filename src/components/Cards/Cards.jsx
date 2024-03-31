@@ -7,7 +7,13 @@ import { Button } from "../../components/Button/Button"
 import { Card } from "../../components/Card/Card"
 import * as C from "../../const"
 import { useGameMode } from "../../hooks/useGameMode"
-import { getLeaderList } from "../../api/api"
+// import { getLeaderList } from "../../api/api"
+
+// let List = []
+
+// await getLeaderList().then(data => {
+//   List = data.leaders.slice(0, 10).sort((a, b) => (a.time > b.time ? 1 : -1))
+// })
 
 /**
  * Основной компонент игры, внутри него находится вся игровая механика и логика.
@@ -83,11 +89,9 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
     const isPlayerWon = nextCards.every(card => card.open)
 
     // Победа - все карты на поле открыты
-    if (isPlayerWon) {
-      getLeaderList().then(() => {
-        finishGame(C.STATUS_WON)
-      })
 
+    if (isPlayerWon) {
+      finishGame(C.STATUS_WON)
       return
     }
 
