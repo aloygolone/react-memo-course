@@ -70,9 +70,12 @@ export function SelectLevelPage() {
             </label>
           </li>
         </ul>
-        <Checkbox id={"modeCheckbox"} name={"modeCheckbox"} label={"Игра до 3 ошибок"} onClick={selectGameMode} />
+        <Checkbox id={"modeCheckbox"} name={"modeCheckbox"} label={"Легкий режим (3 жизни)"} onClick={selectGameMode} />
         <Link to={`/game/${number}`}>
           <Button>Играть</Button>
+        </Link>
+        <Link to="/leaderboard">
+          <div className={styles.leaderBoardLink}>Перейти к лидерборду</div>
         </Link>
       </div>
     </div>

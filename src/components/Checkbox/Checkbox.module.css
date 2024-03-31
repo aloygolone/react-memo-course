@@ -8,9 +8,11 @@
   display: flex;
   align-items: center;
   user-select: none;
-  font-family: "StratosSkyeng";
-  font-size: 30px;
-  color: #004980;
+  font-family: "Roboto";
+  font-size: 24px;
+  font-weight: 400;
+  line-height: 32px;
+  margin-bottom: 16px;
 }
 
 .label:hover {
@@ -20,10 +22,10 @@
 .input + label::before {
   content: "";
   display: inline-block;
-  width: 32px;
-  height: 32px;
+  width: 30px;
+  height: 29px;
   margin-right: 12px;
-  border-radius: 16px;
+  border-radius: 4px;
   background-repeat: no-repeat;
   background-position: center center;
   background-size: 50% 50%;
