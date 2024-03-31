@@ -6,7 +6,7 @@ import { getLeaderList } from "../../api/api"
 let List = []
 
 await getLeaderList().then(data => {
-  List = data.leaders
+  List = data.leaders.slice(0, 10).sort((a, b) => (a.time > b.time ? 1 : -1))
 })
 
 export function LeaderBoardPage() {
@@ -25,9 +25,9 @@ export function LeaderBoardPage() {
             <div className={styles.name}>Пользователь</div>
             <div className={styles.time}>Время</div>
           </div>
-          {List.map(list => (
+          {List.map((list, index) => (
             <div className={cn(styles.listContent, styles.playerText)} key={list.id}>
-              <div className={styles.position}># {list.id}</div>
+              <div className={styles.position}># {index + 1}</div>
               <div className={styles.name}>{list.name}</div>
               <div className={styles.time}>{list.time}</div>
             </div>
