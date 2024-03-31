@@ -3,14 +3,13 @@ import styles from "./LeaderBoardPage.module.css"
 import cn from "classnames"
 import { Button } from "../../components/Button/Button"
 import { getLeaderList } from "../../api/api"
+let List = []
+
+await getLeaderList().then(data => {
+  List = data.leaders
+})
 
 export function LeaderBoardPage() {
-  let List = []
-  getLeaderList().then(data => {
-    List = data.leaders
-  })
-  console.log(List)
-
   return (
     <>
       <div className={styles.content}>

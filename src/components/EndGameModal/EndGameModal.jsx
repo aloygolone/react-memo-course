@@ -36,8 +36,6 @@ export function EndGameModal({ isWon, gameDurationSeconds, gameDurationMinutes, 
 
   const sumbitPostLeader = () => {
     postLeader({ nameInputElement, time })
-    console.log(nameInputElement.value)
-    console.log(time)
   }
 
   return (
