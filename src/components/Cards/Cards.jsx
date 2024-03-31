@@ -46,6 +46,7 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
     setStatus(C.STATUS_IN_PROGRESS)
   }
   function resetGame() {
+    setLifes(isEasyMode ? 3 : 1)
     setGameStartDate(null)
     setGameEndDate(null)
     setTimer(getTimerValue(null, null))

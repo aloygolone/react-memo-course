@@ -21,7 +21,7 @@
   color: #004980;
   text-align: center;
   font-variant-numeric: lining-nums proportional-nums;
-  font-family: StratosSkyeng;
+  font-family: "StratosSkyeng";
   font-size: 40px;
   font-style: normal;
   font-weight: 400;
@@ -48,10 +48,14 @@
   background: #fff;
 }
 
+.level:hover {
+  background: #7ac100;
+}
+
 .levelLink {
   color: #0080c1;
   text-align: center;
-  font-family: StratosSkyeng;
+  font-family: "StratosSkyeng";
   font-size: 64px;
   font-style: normal;
   font-weight: 400;
@@ -59,6 +63,6 @@
   text-decoration: none;
 }
 
-.levelLink:visited {
-  color: #0080c1;
+.levelInput {
+  display: none;
 }

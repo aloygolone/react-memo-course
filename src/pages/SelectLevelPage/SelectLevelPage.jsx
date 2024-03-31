@@ -1,37 +1,79 @@
-import { Link } from "react-router-dom"
 import styles from "./SelectLevelPage.module.css"
 import Checkbox from "../../components/Checkbox/Checkbox"
 import { useGameMode } from "../../hooks/useGameMode"
+import { Button } from "../../components/Button/Button"
+import { useState } from "react"
+import { Link } from "react-router-dom"
 
 export function SelectLevelPage() {
   const { setIsEasyMode } = useGameMode()
   const selectGameMode = () => setIsEasyMode(prevstate => !prevstate)
+  const [difficult, setDifficult] = useState({})
+  const selectDifficult = e => {
+    const { name, value } = e.target
+    setDifficult({ ...difficult, [name]: value })
+  }
+
+  let number
+  if (difficult.mode === "easy") {
+    number = 3
+  }
+  if (difficult.mode === "middle") {
+    number = 6
+  }
+  if (difficult.mode === "hard") {
+    number = 9
+  }
+
   return (
     <div className={styles.container}>
       <div className={styles.modal}>
         <h1 className={styles.title}>Выбери сложность</h1>
         <ul className={styles.levels}>
+          <input
+            className={styles.levelInput}
+            type="radio"
+            id="radio1"
+            name="mode"
+            value="easy"
+            onChange={selectDifficult}
+          />
           <li className={styles.level}>
-            <Link className={styles.levelLink} to="/game/3">
+            <label className={styles.levelLink} htmlFor="radio1">
               1
-            </Link>
+            </label>
           </li>
+          <input
+            className={styles.levelInput}
+            type="radio"
+            id="radio2"
+            name="mode"
+            value="middle"
+            onChange={selectDifficult}
+          />
           <li className={styles.level}>
-            <Link className={styles.levelLink} to="/game/6">
+            <label className={styles.levelLink} htmlFor="radio2">
               2
-            </Link>
+            </label>
           </li>
+          <input
+            className={styles.levelInput}
+            type="radio"
+            id="radio3"
+            name="mode"
+            value="hard"
+            onChange={selectDifficult}
+          />
           <li className={styles.level}>
-            <Link className={styles.levelLink} to="/game/9">
+            <label className={styles.levelLink} htmlFor="radio3">
               3
-            </Link>
+            </label>
           </li>
         </ul>
-        {/* 1. Создаем контекст который будет передавать данные режима */}
-        {/* 2. отобразить количество попыток в компоненте cards, там же будет состояние попыток */}
-        {/* 3. нужно в cards в OpenCard мы должны создать условие если включен режим */}
-        {/* 4.  если ровно 2 карточки без пары, а попытки еще остались то мы должны перевернуть карточки без пары и вычесть попытку*/}
         <Checkbox id={"modeCheckbox"} name={"modeCheckbox"} label={"Игра до 3 ошибок"} onClick={selectGameMode} />
+        <Link to={`/game/${number}`}>
+          <Button>Играть</Button>
+        </Link>
       </div>
     </div>
   )
