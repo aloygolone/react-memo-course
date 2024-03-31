@@ -6,6 +6,7 @@ import { EndGameModal } from "../../components/EndGameModal/EndGameModal"
 import { Button } from "../../components/Button/Button"
 import { Card } from "../../components/Card/Card"
 import * as C from "../../const"
+import { useGameMode } from "../../hooks/useGameMode"
 
 /**
  * Основной компонент игры, внутри него находится вся игровая механика и логика.
@@ -28,6 +29,10 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
     seconds: 0,
     minutes: 0,
   })
+
+  // Подключаем easyMode
+  const { isEasyMode } = useGameMode()
+  const [lifes, setLifes] = useState(isEasyMode ? 3 : 1)
 
   function finishGame(status = C.STATUS_LOST) {
     setGameEndDate(new Date())
@@ -95,16 +100,24 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
       return false
     })
 
-    const playerLost = openCardsWithoutPair.length >= 2
-
-    // "Игрок проиграл", т.к на поле есть две открытые карты без пары
-    if (playerLost) {
-      finishGame(C.STATUS_LOST)
-      return
+    if (openCardsWithoutPair.length >= 2) {
+      setTimeout(() => {
+        openCardsWithoutPair[1].open = false
+        openCardsWithoutPair[0].open = false
+      }, 1000)
+      setLifes(lifes - 1)
     }
 
     // ... игра продолжается
   }
+
+  // "Игрок проиграл", т.к на поле есть две открытые карты без пары
+  useEffect(() => {
+    if (lifes === 0) {
+      finishGame(C.STATUS_LOST)
+      return
+    }
+  }, [lifes])
 
   const isGameEnded = status === C.STATUS_LOST || status === C.STATUS_WON
 
@@ -167,7 +180,13 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
             </>
           )}
         </div>
-        {status === C.STATUS_IN_PROGRESS ? <Button onClick={resetGame}>Начать заново</Button> : null}
+
+        {status === C.STATUS_IN_PROGRESS ? (
+          <>
+            <div>{isEasyMode && `Количество жизней: ${lifes}`}</div>
+            <Button onClick={resetGame}>Начать заново</Button>
+          </>
+        ) : null}
       </div>
 
       <div className={styles.cards}>
