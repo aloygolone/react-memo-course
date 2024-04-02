@@ -5,11 +5,15 @@ import { Button } from "../Button/Button"
 import deadImageUrl from "./images/dead.png"
 import celebrationImageUrl from "./images/celebration.png"
 import submitImageUrl from "./images/submit.png"
-import { Link } from "react-router-dom"
+import { Link, useParams } from "react-router-dom"
 import { postLeader } from "../../api/api"
 
 export function EndGameModal({ isWon, gameDurationSeconds, gameDurationMinutes, onClick }) {
-  const title = isWon ? "Вы попали в лидерборд!" : "Вы проиграли!"
+  const { pairsCount } = useParams()
+
+  const isLeader = isWon && pairsCount === 9
+
+  const title = isLeader ? "Вы попали в лидерборд!" : isWon ? "Вы выйграли" : "Вы проиграли!"
 
   const imgSrc = isWon ? celebrationImageUrl : deadImageUrl
 
@@ -35,14 +39,15 @@ export function EndGameModal({ isWon, gameDurationSeconds, gameDurationMinutes, 
     .padStart("2", "0")}`
 
   const sumbitPostLeader = () => {
-    postLeader({ nameInputElement, time })
+    const timeToBoard = gameDurationMinutes * 60 + gameDurationSeconds
+    postLeader({ nameInputElement, time: timeToBoard })
   }
 
   return (
     <div className={styles.modal}>
       <img className={styles.image} src={imgSrc} alt={imgAlt} />
       <h2 className={styles.title}>{title}</h2>
-      {isWon ? (
+      {isLeader ? (
         <div className={styles.userblock}>
           <input id="name-input" type="text" className={styles.input} placeholder="Пользователь" />
           <img onClick={sumbitPostLeader} className={styles.submitImg} src={submitImg} alt="Отправить имя" />

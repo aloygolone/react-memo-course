@@ -4,9 +4,10 @@ import { useGameMode } from "../../hooks/useGameMode"
 import { Button } from "../../components/Button/Button"
 import { useState } from "react"
 import { Link } from "react-router-dom"
+import cn from "classnames"
 
 export function SelectLevelPage() {
-  const { setIsEasyMode } = useGameMode()
+  const { setIsEasyMode } = useGameMode(false)
   const selectGameMode = () => setIsEasyMode(prevstate => !prevstate)
   const [difficult, setDifficult] = useState({})
   const selectDifficult = e => {
@@ -38,7 +39,7 @@ export function SelectLevelPage() {
             value="easy"
             onChange={selectDifficult}
           />
-          <li className={styles.level}>
+          <li className={cn(styles.level, { [styles.active]: number === 3 })}>
             <label className={styles.levelLink} htmlFor="radio1">
               1
             </label>
@@ -51,7 +52,7 @@ export function SelectLevelPage() {
             value="middle"
             onChange={selectDifficult}
           />
-          <li className={styles.level}>
+          <li className={cn(styles.level, { [styles.active]: number === 6 })}>
             <label className={styles.levelLink} htmlFor="radio2">
               2
             </label>
@@ -64,7 +65,7 @@ export function SelectLevelPage() {
             value="hard"
             onChange={selectDifficult}
           />
-          <li className={styles.level}>
+          <li className={cn(styles.level, { [styles.active]: number === 9 })}>
             <label className={styles.levelLink} htmlFor="radio3">
               3
             </label>

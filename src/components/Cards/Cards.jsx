@@ -7,13 +7,9 @@ import { Button } from "../../components/Button/Button"
 import { Card } from "../../components/Card/Card"
 import * as C from "../../const"
 import { useGameMode } from "../../hooks/useGameMode"
-// import { getLeaderList } from "../../api/api"
+import lifeHeartImageUrl from "./images/lifeHeart.png"
 
-// let List = []
-
-// await getLeaderList().then(data => {
-//   List = data.leaders.slice(0, 10).sort((a, b) => (a.time > b.time ? 1 : -1))
-// })
+const lifeHeartImage = lifeHeartImageUrl
 
 /**
  * Основной компонент игры, внутри него находится вся игровая механика и логика.
@@ -192,7 +188,8 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
 
         {status === C.STATUS_IN_PROGRESS ? (
           <>
-            <div>{isEasyMode && `Количество жизней: ${lifes}`}</div>
+            <div className={styles.lifeText}>Количество жизней: {lifes}</div>
+            <img className={styles.lifeHeart} src={lifeHeartImage} alt="life_heart" />
             <Button onClick={resetGame}>Начать заново</Button>
           </>
         ) : null}

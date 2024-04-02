@@ -3,13 +3,27 @@ import styles from "./LeaderBoardPage.module.css"
 import cn from "classnames"
 import { Button } from "../../components/Button/Button"
 import { getLeaderList } from "../../api/api"
-let List = []
-
-await getLeaderList().then(data => {
-  List = data.leaders.sort((a, b) => (a.time > b.time ? 1 : -1)).slice(0, 10)
-})
+import { useEffect, useState } from "react"
 
 export function LeaderBoardPage() {
+  const [leaders, setLeaders] = useState([])
+
+  useEffect(() => {
+    getLeaderList().then(data => {
+      setLeaders(data.leaders.sort((a, b) => (a.time > b.time ? 1 : -1)).slice(0, 10))
+    })
+  }, [])
+
+  function leaderTime(time) {
+    const minutes = Math.floor(time / 60)
+    const seconds = time % 60
+    if (minutes === 0) {
+      return `${seconds} сек`
+    } else {
+      return `${minutes} мин ${seconds} сек`
+    }
+  }
+
   return (
     <>
       <div className={styles.content}>
@@ -25,11 +39,11 @@ export function LeaderBoardPage() {
             <div className={styles.name}>Пользователь</div>
             <div className={styles.time}>Время</div>
           </div>
-          {List.map((list, index) => (
+          {leaders.map((list, index) => (
             <div className={cn(styles.listContent, styles.playerText)} key={list.id}>
               <div className={styles.position}># {index + 1}</div>
               <div className={styles.name}>{list.name}</div>
-              <div className={styles.time}>{list.time}</div>
+              <div className={styles.time}>{leaderTime(list.time)}</div>
             </div>
           ))}
         </div>
