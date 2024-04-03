@@ -43,13 +43,15 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
 
   // Подключаем алахамору
   const [usedAlohomora, setUsedAlohomora] = useState(false)
+  const [usedOnce, setUsedOnce] = useState(true)
+  const [lastCard, setLastCard] = useState(false)
 
   function useAlohomora() {
     setUsedAlohomora(true)
   }
 
   useEffect(() => {
-    if (usedAlohomora) {
+    if (usedAlohomora && usedOnce) {
       const notOpenedCards = cards.filter(card => !card.open)
       const randomCard = notOpenedCards[Math.floor(Math.random() * notOpenedCards.length)]
       const randomPair = notOpenedCards.filter(
@@ -58,9 +60,10 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
 
       randomPair[1].open = true
       randomPair[0].open = true
-      setUsedAlohomora(false)
+
+      setUsedOnce(false)
     }
-  }, [cards, usedAlohomora])
+  }, [cards, usedAlohomora, usedOnce])
 
   function finishGame(status = C.STATUS_LOST) {
     setGameEndDate(new Date())
@@ -75,6 +78,9 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
   }
   function resetGame() {
     setLifes(isEasyMode ? 3 : 1)
+    setLastCard(false)
+    setUsedAlohomora(false)
+    setUsedOnce(true)
     setGameStartDate(null)
     setGameEndDate(null)
     setTimer(getTimerValue(null, null))
@@ -137,7 +143,9 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
       }, 1000)
       setLifes(lifes - 1)
     }
-
+    if (cards.filter(card => !card.open).length === 2) {
+      setLastCard(true)
+    }
     // ... игра продолжается
   }
 
@@ -213,7 +221,10 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
 
         {status === C.STATUS_IN_PROGRESS ? (
           <>
-            <div onClick={useAlohomora} className={cn(styles.alohomoraBack, { [styles.notActive]: usedAlohomora })}>
+            <div
+              onClick={useAlohomora}
+              className={cn(styles.alohomoraBack, { [styles.notActive]: usedAlohomora || lastCard })}
+            >
               <img className={styles.alohomoraImg} src={alohomoraImage} alt="alohomora" />
             </div>
             <div className={styles.lifeText}>Количество жизней: {lifes}</div>
