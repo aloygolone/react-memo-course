@@ -1,4 +1,4 @@
-const host = "https://wedev-api.sky.pro/api/leaderboard"
+const host = "https://wedev-api.sky.pro/api/v2/leaderboard"
 
 // Получить leaderboard
 export async function getLeaderList() {

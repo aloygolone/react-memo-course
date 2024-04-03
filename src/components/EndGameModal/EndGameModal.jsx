@@ -11,7 +11,9 @@ import { postLeader } from "../../api/api"
 export function EndGameModal({ isWon, gameDurationSeconds, gameDurationMinutes, onClick }) {
   const { pairsCount } = useParams()
 
-  const isLeader = isWon && pairsCount === "9"
+  const hardLevelPairsNumber = 9
+
+  const isLeader = isWon && Number(pairsCount) === hardLevelPairsNumber
 
   const title = isLeader ? "Вы попали в лидерборд!" : isWon ? "Вы выйграли" : "Вы проиграли!"
 

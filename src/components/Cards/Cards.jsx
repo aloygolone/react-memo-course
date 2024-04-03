@@ -8,8 +8,11 @@ import { Card } from "../../components/Card/Card"
 import * as C from "../../const"
 import { useGameMode } from "../../hooks/useGameMode"
 import lifeHeartImageUrl from "./images/lifeHeart.png"
+import alohomoraImageUrl from "./images/alohomora.png"
+import cn from "classnames"
 
 const lifeHeartImage = lifeHeartImageUrl
+const alohomoraImage = alohomoraImageUrl
 
 /**
  * Основной компонент игры, внутри него находится вся игровая механика и логика.
@@ -19,6 +22,7 @@ const lifeHeartImage = lifeHeartImageUrl
 export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
   // В cards лежит игровое поле - массив карт и их состояние открыта\закрыта
   const [cards, setCards] = useState([])
+
   // Текущий статус игры
   const [status, setStatus] = useState(C.STATUS_PREVIEW)
 
@@ -36,6 +40,27 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
   // Подключаем easyMode
   const { isEasyMode } = useGameMode()
   const [lifes, setLifes] = useState(isEasyMode ? 3 : 1)
+
+  // Подключаем алахамору
+  const [usedAlohomora, setUsedAlohomora] = useState(false)
+
+  function useAlohomora() {
+    setUsedAlohomora(true)
+  }
+
+  useEffect(() => {
+    if (usedAlohomora) {
+      const notOpenedCards = cards.filter(card => !card.open)
+      const randomCard = notOpenedCards[Math.floor(Math.random() * notOpenedCards.length)]
+      const randomPair = notOpenedCards.filter(
+        sameCards => randomCard.suit === sameCards.suit && randomCard.rank === sameCards.rank,
+      )
+
+      randomPair[1].open = true
+      randomPair[0].open = true
+      setUsedAlohomora(false)
+    }
+  }, [cards, usedAlohomora])
 
   function finishGame(status = C.STATUS_LOST) {
     setGameEndDate(new Date())
@@ -188,6 +213,9 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
 
         {status === C.STATUS_IN_PROGRESS ? (
           <>
+            <div onClick={useAlohomora} className={cn(styles.alohomoraBack, { [styles.notActive]: usedAlohomora })}>
+              <img className={styles.alohomoraImg} src={alohomoraImage} alt="alohomora" />
+            </div>
             <div className={styles.lifeText}>Количество жизней: {lifes}</div>
             <img className={styles.lifeHeart} src={lifeHeartImage} alt="life_heart" />
             <Button onClick={resetGame}>Начать заново</Button>
