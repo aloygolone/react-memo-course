@@ -43,7 +43,7 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
 
   // Подключаем алахамору
   const [usedAlohomora, setUsedAlohomora] = useState(false)
-  const [usedOnce, setUsedOnce] = useState(true)
+  const [usedOnce, setUsedOnce] = useState(false)
   const [lastCard, setLastCard] = useState(false)
 
   function useAlohomora() {
@@ -51,7 +51,7 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
   }
 
   useEffect(() => {
-    if (usedAlohomora && usedOnce) {
+    if (usedAlohomora && !usedOnce) {
       const notOpenedCards = cards.filter(card => !card.open)
       const randomCard = notOpenedCards[Math.floor(Math.random() * notOpenedCards.length)]
       const randomPair = notOpenedCards.filter(
@@ -61,7 +61,7 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
       randomPair[1].open = true
       randomPair[0].open = true
 
-      setUsedOnce(false)
+      setUsedOnce(true)
     }
   }, [cards, usedAlohomora, usedOnce])
 
@@ -80,7 +80,7 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
     setLifes(isEasyMode ? 3 : 1)
     setLastCard(false)
     setUsedAlohomora(false)
-    setUsedOnce(true)
+    setUsedOnce(false)
     setGameStartDate(null)
     setGameEndDate(null)
     setTimer(getTimerValue(null, null))
@@ -221,12 +221,16 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
 
         {status === C.STATUS_IN_PROGRESS ? (
           <>
-            <div
-              onClick={useAlohomora}
-              className={cn(styles.alohomoraBack, { [styles.notActive]: usedAlohomora || lastCard })}
-            >
-              <img className={styles.alohomoraImg} src={alohomoraImage} alt="alohomora" />
+            <div className={styles.alohomoraContent}>
+              <div
+                onClick={useAlohomora}
+                className={cn(styles.alohomoraBack, { [styles.notActive]: usedAlohomora || lastCard })}
+              >
+                <img className={styles.alohomoraImg} src={alohomoraImage} alt="alohomora" />
+              </div>
+              <div className={styles.alohomoraText}>"Алохомора" - открывает случайную пару карт</div>
             </div>
+
             <div className={styles.lifeText}>Количество жизней: {lifes}</div>
             <img className={styles.lifeHeart} src={lifeHeartImage} alt="life_heart" />
             <Button onClick={resetGame}>Начать заново</Button>
@@ -249,6 +253,7 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
       {isGameEnded ? (
         <div className={styles.modalContainer}>
           <EndGameModal
+            usedOnce={usedOnce}
             isWon={status === C.STATUS_WON}
             gameDurationSeconds={timer.seconds}
             gameDurationMinutes={timer.minutes}

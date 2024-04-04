@@ -7,13 +7,17 @@ import celebrationImageUrl from "./images/celebration.png"
 import submitImageUrl from "./images/submit.png"
 import { Link, useParams } from "react-router-dom"
 import { postLeader } from "../../api/api"
+import { useGameMode } from "../../hooks/useGameMode"
 
-export function EndGameModal({ isWon, gameDurationSeconds, gameDurationMinutes, onClick }) {
+export function EndGameModal({ isWon, gameDurationSeconds, gameDurationMinutes, onClick, usedOnce }) {
   const { pairsCount } = useParams()
+  const { isEasyMode } = useGameMode()
 
   const hardLevelPairsNumber = 9
 
   const isLeader = isWon && Number(pairsCount) === hardLevelPairsNumber
+
+  const hardPlayed = isLeader && isEasyMode === false
 
   const title = isLeader ? "Вы попали в лидерборд!" : isWon ? "Вы выйграли" : "Вы проиграли!"
 
@@ -36,13 +40,27 @@ export function EndGameModal({ isWon, gameDurationSeconds, gameDurationMinutes, 
   //   })
   // }
 
+  let achievements = []
+
+  if (hardPlayed) {
+    achievements.unshift(1)
+  }
+
+  if (usedOnce === true) {
+    achievements.push(2)
+  }
+
   const time = `${gameDurationMinutes.toString().padStart("2", "0")}.${gameDurationSeconds
     .toString()
     .padStart("2", "0")}`
 
   const sumbitPostLeader = () => {
     const timeToBoard = gameDurationMinutes * 60 + gameDurationSeconds
-    postLeader({ nameInputElement, time: timeToBoard })
+    postLeader({
+      nameInputElement,
+      time: timeToBoard,
+      achievements: achievements,
+    })
   }
 
   return (
