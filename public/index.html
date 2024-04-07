@@ -6,6 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#000000" />
     <meta name="description" content="Web site created using create-react-app" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins&family=Roboto&display=swap" rel="stylesheet" />
     <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
     <!--
       manifest.json provides metadata used when your web app is installed on a
@@ -24,14 +27,14 @@
     <title>Memo Сard Game</title>
     <script>
       if (window.location.pathname === "/") {
-        const basename = "/react-memo";
+        const basename = "/react-memo"
         // Редирект на basename
         // Этот же basename указан в homepage в package.json
         // Этот же basename указан в basename роутера
         // basename нужен чтобы деплоить на gh-pages
         // если gh pages хостится не на /react-memo
         // то нужно заменить значение на актуальное значение здесь и во всех других местах
-        window.location.assign(basename);
+        window.location.assign(basename)
       }
     </script>
   </head>
